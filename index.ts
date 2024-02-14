@@ -19,11 +19,11 @@ export type BurritoTransformRequestParams = {
   force?: boolean;
 };
 
-type TransformPart = {
+export type TransformPart = {
   hash: string;
   completion: any;
 };
-type BurritoTransformResponse = TransformPart[];
+export type BurritoTransformResponse = TransformPart[];
 
 export class Burrito {
   private baseUrl: string;
