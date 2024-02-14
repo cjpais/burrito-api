@@ -84,11 +84,9 @@ export class Burrito {
   }
 
   public async transform<T>(query: BurritoTransformRequestParams) {
-    const data = (await this.fetcher(
-      "transform",
-      query
-    )) as BurritoTransformResponse;
+    const data = await this.fetcher("transform", query);
 
-    return data;
+    if (query.mode === "each") return data as T;
+    if (query.mode === "all") return data as BurritoTransformResponse;
   }
 }
