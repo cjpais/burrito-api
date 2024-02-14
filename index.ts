@@ -57,8 +57,9 @@ export class Burrito {
     this.fetchFunc = fetchFunc ? fetchFunc : fetch;
   }
 
-  private async fetcher(url: string, body: any) {
+  private async fetcher(url: string, body: any, init?: RequestInit | any) {
     return await this.fetchFunc(`${this.baseUrl}/${url}`, {
+      ...init,
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -70,21 +71,27 @@ export class Burrito {
       .catch((err) => console.error(err));
   }
 
-  public async query<T>(query: BurritoQueryParams) {
-    const data = await this.fetcher("query", query).then(
+  public async query<T>(query: BurritoQueryParams, init?: RequestInit | any) {
+    const data = await this.fetcher("query", query, init).then(
       (d: any) => d.data as T
     );
 
     return data;
   }
 
-  public async queryData<T>(query: BurritoQueryParams) {
-    const data = await this.fetcher("query/data", query);
+  public async queryData<T>(
+    query: BurritoQueryParams,
+    init?: RequestInit | any
+  ) {
+    const data = await this.fetcher("query/data", query, init);
     return data as T;
   }
 
-  public async transform<T>(query: BurritoTransformRequestParams) {
-    const data = await this.fetcher("transform", query);
+  public async transform<T>(
+    query: BurritoTransformRequestParams,
+    init?: RequestInit | any
+  ) {
+    const data = await this.fetcher("transform", query, init);
 
     if (query.mode === "each") return data as T;
     return data as BurritoTransformResponse;
