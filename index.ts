@@ -72,8 +72,8 @@ export class Burrito {
   }
 
   public async query<T>(query: BurritoQueryParams, init?: RequestInit | any) {
-    const data = await this.fetcher("query", query, init).then(
-      (d: any) => d.data as T
+    const data = await this.fetcher("query", query, init).then((d: any) =>
+      d.data ? (d.data as T) : (d as T)
     );
 
     return data;
