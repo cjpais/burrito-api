@@ -135,7 +135,7 @@ export class Burrito {
   ): Promise<T>;
 
   public async transform<T = any>(
-    query: BurritoTransformRequestParams & { mode: "each" },
+    query: BurritoTransformRequestParams & { mode?: "each" },
     init?: RequestInit | any
   ): Promise<BurritoTransformResponse<T>>;
 
