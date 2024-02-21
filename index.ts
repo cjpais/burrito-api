@@ -57,15 +57,18 @@ export class Burrito {
   private baseUrl: string;
   private apiKey: string;
   private fetchFunc: typeof fetch;
+  private fetchDefaults?: RequestInit | any;
 
   constructor({
     baseUrl,
     apiKey,
     fetchFunc,
+    fetchDefaults,
   }: {
     baseUrl?: string;
     apiKey?: string;
     fetchFunc?: typeof fetch;
+    fetchDefaults?: RequestInit | any;
   }) {
     // Ensure environment variables are set
     if (!baseUrl && !process.env.BURRITO_URL) {
@@ -83,10 +86,12 @@ export class Burrito {
     this.baseUrl = baseUrl ? baseUrl : process.env.BURRITO_URL!;
     this.apiKey = apiKey ? apiKey : process.env.BURRITO_KEY!;
     this.fetchFunc = fetchFunc ? fetchFunc : fetch;
+    this.fetchDefaults = fetchDefaults;
   }
 
   private async fetcher(url: string, body: any, init?: RequestInit | any) {
     return await this.fetchFunc(`${this.baseUrl}/${url}`, {
+      ...this.fetchDefaults,
       ...init,
       method: "POST",
       headers: {
