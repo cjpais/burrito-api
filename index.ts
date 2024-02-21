@@ -19,11 +19,39 @@ export type BurritoTransformRequestParams = {
   force?: boolean;
 };
 
-export type TransformPart = {
-  hash: string;
-  completion: any;
+export type BurritoData = {
+  hash?: string;
+  created?: number;
+  date?: string;
+  title?: string;
+  summary?: string;
+  description?: string;
+  caption?: string;
+  text?: string;
+  // TODO should add userData and location
 };
-export type BurritoTransformResponse = TransformPart[];
+
+export type BurritoEmbeddingsData = {
+  hash: string;
+  distance: number;
+  type: string;
+  created: number;
+  summary?: string;
+  title?: string;
+  description?: string;
+};
+
+export type BurritoEmbeddingsRequest = {
+  vectors?: number[][];
+  queries?: string[];
+  num?: number;
+};
+
+export type TransformPart<T> = {
+  hash: string;
+  completion: T;
+};
+export type BurritoTransformResponse<T = any> = TransformPart<T>[];
 
 export class Burrito {
   private baseUrl: string;
@@ -71,7 +99,10 @@ export class Burrito {
       .catch((err) => console.error(err));
   }
 
-  public async query<T>(query: BurritoQueryParams, init?: RequestInit | any) {
+  public async query<T = BurritoData>(
+    query: BurritoQueryParams,
+    init?: RequestInit | any
+  ) {
     const data = await this.fetcher("query", query, init).then((d: any) =>
       d.data ? (d.data as T) : (d as T)
     );
@@ -87,13 +118,34 @@ export class Burrito {
     return data as T;
   }
 
-  public async transform<T>(
+  public async queryEmbeddings(
+    query: BurritoEmbeddingsRequest,
+    init?: RequestInit | any
+  ) {
+    return (await this.fetcher(
+      "query/embeddings",
+      query,
+      init
+    )) as BurritoEmbeddingsData[];
+  }
+
+  public async transform<T = any>(
+    query: BurritoTransformRequestParams & { mode: "all" },
+    init?: RequestInit | any
+  ): Promise<T>;
+
+  public async transform<T = any>(
+    query: BurritoTransformRequestParams & { mode: "each" },
+    init?: RequestInit | any
+  ): Promise<BurritoTransformResponse<T>>;
+
+  public async transform<T = any>(
     query: BurritoTransformRequestParams,
     init?: RequestInit | any
   ) {
     const data = await this.fetcher("transform", query, init);
 
-    if (query.mode === "each") return data as T;
-    return data as BurritoTransformResponse;
+    if (query.mode === "each") return data as BurritoTransformResponse<T>;
+    return data as T;
   }
 }
