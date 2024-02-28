@@ -14,9 +14,9 @@ export type BurritoTransformRequestParams = {
   completionType?: "json" | "text";
   save?: {
     app: string;
-    key: string;
   };
   force?: boolean;
+  debug?: boolean;
 };
 
 export type BurritoData = {
