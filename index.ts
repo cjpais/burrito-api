@@ -8,6 +8,7 @@ export type BurritoModels =
   | "mistral-large";
 
 export type BurritoQueryParams = {
+  app: string;
   query: string;
   schema?: any;
   cacheFor?: number;
