@@ -1,3 +1,12 @@
+export type BurritoModels =
+  | "gpt4"
+  | "gpt3.5"
+  | "mistral7b"
+  | "mixtral"
+  | "mistral-small"
+  | "mistral-medium"
+  | "mistral-large";
+
 export type BurritoQueryParams = {
   query: string;
   schema?: any;
@@ -5,11 +14,18 @@ export type BurritoQueryParams = {
   force?: boolean;
 };
 
+export type BurritoInstallRequestParams = {
+  systemPrompt?: string;
+  prompt: string;
+  mode: "each";
+  model: BurritoModels;
+};
+
 export type BurritoTransformRequestParams = {
   hashes?: string[];
   prompt: string;
   systemPrompt?: string;
-  model?: "gpt4" | "gpt3.5" | "mistral7b" | "mixtral";
+  model?: BurritoModels;
   mode?: "each" | "all";
   completionType?: "json" | "text";
   save?: {
@@ -132,6 +148,13 @@ export class Burrito {
       query,
       init
     )) as BurritoEmbeddingsData[];
+  }
+
+  public async install(
+    query: BurritoInstallRequestParams,
+    init?: RequestInit | any
+  ) {
+    return await this.fetcher("install", query, init);
   }
 
   public async transform<T = any>(
