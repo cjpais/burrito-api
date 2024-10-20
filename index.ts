@@ -70,6 +70,15 @@ export type TransformPart<T> = {
 };
 export type BurritoTransformResponse<T = any> = TransformPart<T>[];
 
+export type GetTransformsResponse = {
+  [name: string]: {
+    systemPrompt: string;
+    prompt: string;
+    mode: string;
+    model: string;
+  };
+};
+
 export class Burrito {
   private baseUrl: string;
   private apiKey: string;
@@ -158,8 +167,13 @@ export class Burrito {
     return await this.fetcher("install", query, init);
   }
 
-  public async getTransforms(init?: RequestInit | any) {
-    return await this.fetcher("transforms", null, { ...init, method: "GET" });
+  public async getTransforms(
+    init?: RequestInit | any
+  ): Promise<GetTransformsResponse> {
+    return (await this.fetcher("transforms", null, {
+      ...init,
+      method: "GET",
+    })) as GetTransformsResponse;
   }
 
   public async transform<T = any>(
