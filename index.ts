@@ -15,6 +15,13 @@ export type BurritoQueryParams = {
   force?: boolean;
 };
 
+export type BurritoQueryDataParams = {
+  query: string;
+  schema?: any;
+  cacheFor?: number;
+  force?: boolean;
+};
+
 export type BurritoInstallRequestParams = {
   systemPrompt?: string;
   prompt: string;
@@ -142,7 +149,7 @@ export class Burrito {
   }
 
   public async queryData<T>(
-    query: BurritoQueryParams,
+    query: BurritoQueryDataParams,
     init?: RequestInit | any
   ) {
     const data = await this.fetcher("query/data", query, init);
