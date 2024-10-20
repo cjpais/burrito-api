@@ -106,16 +106,16 @@ export class Burrito {
     this.fetchDefaults = fetchDefaults;
   }
 
-  private async fetcher(url: string, body: any, init?: RequestInit | any) {
+  private async fetcher(url: string, body: any | null, init?: RequestInit) {
     return await this.fetchFunc(`${this.baseUrl}/${url}`, {
       ...this.fetchDefaults,
       ...init,
-      method: "POST",
+      method: init?.method || "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${this.apiKey}`,
       },
-      body: JSON.stringify(body),
+      body: body && JSON.stringify(body),
     })
       .then((res) => res.json())
       .catch((err) => console.error(err));
@@ -156,6 +156,10 @@ export class Burrito {
     init?: RequestInit | any
   ) {
     return await this.fetcher("install", query, init);
+  }
+
+  public async getTransforms(init?: RequestInit | any) {
+    return await this.fetcher("transforms", null, { ...init, method: "GET" });
   }
 
   public async transform<T = any>(

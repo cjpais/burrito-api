@@ -1,17 +1,17 @@
 {
   "name": "@burrito-place/api",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "devDependencies": {
     "@types/node": "^20.11.17"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   },
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "pnpm run build"
   },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  },
-  "type": "module"
+  "type": "module",
+  "types": "dist/index.d.ts"
 }
