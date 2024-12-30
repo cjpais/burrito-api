@@ -26,14 +26,15 @@ export type BurritoInstallRequestParams = {
   systemPrompt?: string;
   prompt: string;
   mode: "each";
-  model: BurritoModels;
+  model: BurritoModels | string;
+  app: string;
 };
 
 export type BurritoTransformRequestParams = {
   hashes?: string[];
   prompt: string;
   systemPrompt?: string;
-  model?: BurritoModels;
+  model?: BurritoModels | string;
   mode?: "each" | "all";
   completionType?: "json" | "text";
   save?: {
